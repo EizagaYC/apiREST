@@ -11,6 +11,11 @@ class Permission extends Model
 
     protected $fillable = [ 'name' ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     # RELATIONSHIP  
     public function roles(){
        return $this->belongsToMany(Role::class);

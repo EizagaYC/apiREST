@@ -54,47 +54,65 @@ class PermissionSeeder extends Seeder
 
         # PERMISSIONS ROLES
 	    $permission = Permission::create([
-	        'name'          => 'Crear Role'
+	        'name'          => 'Crear Role',
+	        'slug'          => 'role.store',
 	    ]);
 
 		$permission = Permission::create([
-	        'name'          => 'Listar Role'
+	        'name'          => 'Listar Role',
+	        'slug'          => 'role.index',
 	    ]);
 
 	    $permission = Permission::create([
-	        'name'          => 'Modificar Role'
+	        'name'          => 'Modificar Role',
+	        'slug'          => 'role.edit',
+
 	    ]);
 
 	    $permission = Permission::create([
-	        'name'          => 'Eliminar Role'
+	        'name'          => 'Eliminar Role',
+	        'slug'          => 'role.destroy',
+
 	    ]);
 
 	    $permission = Permission::create([
-	        'name'          => 'Ver Detalles de Role'
+	        'name'          => 'Ver Detalles de Role',
+	        'slug'          => 'role.show',
+
 	    ]);
 
 		# PERMISSIONS USER
 	    $permission = Permission::create([
-	        'name'          => 'Crear Usuario'
+	        'name'          => 'Crear Usuario',
+	        'slug'          => 'user.create',
+
 	    ]);
 
 		$permission = Permission::create([
-	        'name'          => 'Listar Usuario'
+	        'name'          => 'Listar Usuario',
+	        'slug'          => 'user.index',
+
 	    ]);
 
 		# ASSIGN PERMISSION TO ROLE
 	    $permission_visitor[] = $permission->id ;
 
 	    $permission = Permission::create([
-	        'name'          => 'Modificar Usuario'
+	        'name'          => 'Modificar Usuario',
+	        'slug'          => 'user.edit',
+
 	    ]);
 
 	    $permission = Permission::create([
-	        'name'          => 'Eliminar Usuario'
+	        'name'          => 'Eliminar Usuario',
+	        'slug'          => 'user.destroy',
+
 	    ]);
 
 	    $permission = Permission::create([
-	        'name'          => 'Ver Detalles de Usuario'
+	        'name'          => 'Ver Detalles de Usuario',
+	        'slug'          => 'user.show',
+
 	    ]);
 
 	    # ASSIGN PERMISSION TO ROLE

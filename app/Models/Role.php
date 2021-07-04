@@ -11,6 +11,11 @@ class Role extends Model
 
     protected $fillable = [ 'name','full-access' ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     # RELATIONS  
     public function users(){
        return $this->belongsToMany(User::class);
