@@ -21,12 +21,15 @@ class User extends Authenticatable
         'country',
         'phone',
         'dni',
-        'password',
+        'password'
     ];
     
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at',
+        'created_at',
+        'updated_at'
     ];
 
     protected $casts = [
