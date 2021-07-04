@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -13,13 +14,15 @@ class UserController extends Controller
 
     public function index()
     {
+        Gate::authorize('haveaccess','user.index');
+
         return User::all();
     }
 
     public function show(User $user)
     {
-        return Auth::user()->id;
-        
+        Gate::authorize('haveaccess','user.show');
+
         return response()->json([
             'data' => [
                 'user' => $user->with('roles')->where('id',$user->id)->first()
@@ -29,6 +32,8 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        Gate::authorize('haveaccess','user.edit');
+
         $data = $request->validate([
             'name'    => 'required|string|',
             'email'   => 'required|string|unique:users,email,'.$user->id,
@@ -55,6 +60,8 @@ class UserController extends Controller
             'password'=> Hash::make($data['password'])
         ]);
 
+        $user->roles()->sync($request->roles);
+
         return response()->json([
             'data' => [
                 'message' => '¡User updated successfully!'
@@ -65,6 +72,8 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        Gate::authorize('haveaccess','user.destroy');
+
         $user->delete();
 
         return response()->json([

@@ -2,63 +2,99 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Role;
+
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        Gate::authorize('haveaccess','role.index');
+
+        return Role::with('permissions')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function show(Role $role)
+    {
+        Gate::authorize('haveaccess','role.show');
+
+        return response()->json([
+            'data' => [
+                'role' => $role->with('permissions')->where('id',$role->id)->first()
+            ]
+        ], 200);
+    }
+
     public function store(Request $request)
     {
-        //
+        Gate::authorize('haveaccess','role.create');
+
+        $data = $request->validate([
+            'name'    => 'required|string',
+            'full-access' => 'required'
+        ]);
+
+        $role = Role::create([
+            'name'    => $data['name'],
+            'full-access' => $data['full-access']
+        ]);
+
+        $role->permissions()->sync($request->permissions);
+
+        return response()->json([
+            'data' => [
+                'message' => '¡Registered role successfully!',
+                'role' => $role->with('permissions')->where('id',$role->id)->first()
+            ]
+        ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+
+
+    public function update(Request $request, Role $role)
     {
-        //
+        Gate::authorize('haveaccess','role.edit');
+
+        $data = $request->validate([
+            'name'    => 'required|string|'
+        ]);
+
+        $role->update([
+            'name'    => $data['name']
+        ]);
+
+        return response()->json([
+            'data' => [
+                'message' => '¡Role updated successfully!'
+            ]
+        ], 200);
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Role $role)
     {
-        //
-    }
+        Gate::authorize('haveaccess','role.destroy');
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if ($role->users()->count() <= 0) {
+            $role->delete();
+
+            return response()->json([
+                'data' => [
+                    'message' => 'Role deleted successfully!'
+                ]
+            ], 200);
+        }else{
+            return response()->json([
+                'data' => [
+                    'message' => '¡This role is in use!'
+                ]
+            ], 403);
+        }
+        
+
+        
     }
 }

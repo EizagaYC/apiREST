@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,6 +37,12 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'message' => "¡Object not found!"
             ], 400);
+        }
+
+        if($exception instanceof AccessDeniedHttpException){
+            return response()->json([
+                'message' => "¡This action is unauthorized!"
+            ], 403);
         }
 
         return parent::render($request, $exception);

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +18,8 @@ Route::post('register',[AuthController::class, 'register']);
 
 # Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-	Route::get('user',[UserController::class, 'index']);
-	Route::get('user/{user}',[UserController::class, 'show']);
-	Route::put('user/{user}',[UserController::class, 'update']);
-	Route::delete('user/{user}',[UserController::class, 'destroy']);
+	Route::apiResource('user',UserController::class);
+	Route::apiResource('role',RoleController::class);
 
-	Route::get('logout',[AuthController::class, 'logout']);
+	Route::post('logout',[AuthController::class, 'logout']);
 });

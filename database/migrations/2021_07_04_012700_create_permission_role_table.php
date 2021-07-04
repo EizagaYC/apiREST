@@ -11,7 +11,6 @@ class CreatePermissionRoleTable extends Migration
         Schema::create('permission_role', function (Blueprint $table) {
             $table->foreignId('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->foreignId('permission_id')->references('id')->on('permissions')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
