@@ -115,6 +115,40 @@ class PermissionSeeder extends Seeder
 
 	    ]);
 
+	    # PERMISSIONS 
+	    $permission = Permission::create([
+	        'name'          => 'Crear permiso',
+	        'slug'          => 'permission.create',
+
+	    ]);
+
+		$permission = Permission::create([
+	        'name'          => 'Listar permiso',
+	        'slug'          => 'permission.index',
+
+	    ]);
+
+		# ASSIGN PERMISSION TO ROLE
+	    $permission_visitor[] = $permission->id ;
+
+	    $permission = Permission::create([
+	        'name'          => 'Modificar permiso',
+	        'slug'          => 'permission.edit',
+
+	    ]);
+
+	    $permission = Permission::create([
+	        'name'          => 'Eliminar permiso',
+	        'slug'          => 'permission.destroy',
+
+	    ]);
+
+	    $permission = Permission::create([
+	        'name'          => 'Ver Detalles de permiso',
+	        'slug'          => 'permission.show',
+
+	    ]);
+
 	    # ASSIGN PERMISSION TO ROLE
 	    $permission_visitor[] = $permission->id ;
 
